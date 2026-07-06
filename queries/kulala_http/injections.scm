@@ -33,3 +33,10 @@
   (#not-match? @_script "lang=ts")
   (#set! injection.include-children)
   (#set! injection.language "javascript"))
+
+; Jq filter
+((metadata
+  (identifier) @prop
+  (value) @injection.content)
+  (#eq? @prop "kulala-jq")
+  (#set! injection.language "jq"))
