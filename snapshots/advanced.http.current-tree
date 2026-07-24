@@ -18,7 +18,8 @@
     (request_separator [9, 0] - [10, 0]
       value: (value [9, 4] - [9, 8]))
     (pre_request_script [11, 0] - [15, 0]
-      (script [11, 2] - [13, 2]))
+      (script [11, 2] - [13, 2]
+        body: (script_body [12, 0] - [13, 0])))
     request: (request [15, 0] - [25, 0]
       method: (method [15, 0] - [15, 4])
       url: (target_url [15, 5] - [15, 28])
@@ -64,7 +65,8 @@
         value: (value [29, 8] - [29, 24]))
       body: (json_body [31, 0] - [44, 0])
       (res_handler_script [44, 0] - [51, 0]
-        (script [44, 2] - [48, 2]))))
+        (script [44, 2] - [48, 2]
+          body: (script_body [45, 0] - [48, 0])))))
   (section [51, 0] - [79, 0]
     (request_separator [51, 0] - [52, 0])
     request: (request [53, 0] - [79, 0]
@@ -98,7 +100,8 @@
       (res_handler_script [71, 0] - [73, 0]
         (path [71, 2] - [71, 20]))
       (res_handler_script [73, 0] - [79, 0]
-        (script [73, 2] - [76, 2]))))
+        (script [73, 2] - [76, 2]
+          body: (script_body [74, 0] - [76, 0])))))
   (section [79, 0] - [85, 0]
     (request_separator [79, 0] - [80, 0]
       value: (value [79, 4] - [79, 10]))
@@ -172,12 +175,14 @@
         value: (value [105, 14] - [105, 30]))
       body: (json_body [107, 0] - [120, 0])
       (res_handler_script [120, 0] - [125, 0]
-        (script [120, 2] - [122, 2]))))
+        (script [120, 2] - [122, 2]
+          body: (script_body [121, 0] - [122, 0])))))
   (section [125, 0] - [156, 0]
     (request_separator [125, 0] - [126, 0]
       value: (value [125, 4] - [125, 14]))
     (pre_request_script [127, 0] - [146, 0]
-      (script [127, 2] - [144, 2]))
+      (script [127, 2] - [144, 2]
+        body: (script_body [128, 0] - [144, 0])))
     request: (request [146, 0] - [156, 0]
       method: (method [146, 0] - [146, 3])
       url: (target_url [146, 4] - [146, 11]
@@ -185,12 +190,14 @@
           name: (identifier [146, 6] - [146, 9])))
       version: (http_version [146, 12] - [146, 20])
       (res_handler_script [148, 0] - [156, 0]
-        (script [148, 2] - [153, 2]))))
+        (script [148, 2] - [153, 2]
+          body: (script_body [149, 0] - [153, 0])))))
   (section [156, 0] - [173, 0]
     (request_separator [156, 0] - [157, 0]
       value: (value [156, 4] - [156, 15]))
     (pre_request_script [158, 0] - [170, 0]
-      (script [158, 2] - [168, 2]))
+      (script [158, 2] - [168, 2]
+        body: (script_body [159, 0] - [168, 0])))
     request: (request [170, 0] - [173, 0]
       method: (method [170, 0] - [170, 3])
       url: (target_url [170, 4] - [170, 11]
@@ -225,7 +232,8 @@
         value: (value [197, 14] - [197, 30]))
       body: (json_body [199, 0] - [213, 0])
       (res_handler_script [213, 0] - [223, 0]
-        (script [213, 2] - [220, 2]))))
+        (script [213, 2] - [220, 2]
+          body: (script_body [214, 0] - [220, 0])))))
   (section [223, 0] - [234, 0]
     (request_separator [223, 0] - [224, 0])
     request: (request [225, 0] - [234, 0]
@@ -263,7 +271,8 @@
         value: (value [244, 6] - [244, 12]))
       body: (json_body [246, 0] - [251, 0])
       (res_handler_script [251, 0] - [257, 0]
-        (script [251, 2] - [254, 2]))))
+        (script [251, 2] - [254, 2]
+          body: (script_body [252, 0] - [254, 0])))))
   (section [257, 0] - [268, 0]
     (request_separator [257, 0] - [258, 0])
     (metadata [259, 0] - [260, 0]
@@ -373,7 +382,8 @@
   (section [307, 0] - [327, 0]
     (request_separator [307, 0] - [308, 0])
     (pre_request_script [309, 0] - [313, 0]
-      (script [309, 2] - [311, 2]))
+      (script [309, 2] - [311, 2]
+        body: (script_body [310, 0] - [311, 0])))
     (pre_request_script [313, 0] - [315, 0]
       (path [313, 2] - [313, 31]))
     request: (request [315, 0] - [327, 0]

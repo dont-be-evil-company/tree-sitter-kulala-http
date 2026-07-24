@@ -467,7 +467,8 @@
         value: (value [150, 8] - [150, 24]))
       body: (json_body [152, 0] - [165, 0])
       (res_handler_script [165, 0] - [172, 0]
-        (script [165, 2] - [169, 2]))))
+        (script [165, 2] - [169, 2]
+          body: (script_body [166, 0] - [169, 0])))))
   (section [172, 0] - [201, 0]
     (request_separator [172, 0] - [173, 0]
       value: (value [172, 4] - [172, 15]))

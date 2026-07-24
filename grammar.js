@@ -9,7 +9,9 @@
 // @ts-check
 
 const PREC = {
-  COMMENT_PREFIX: 1,
+  // Above body tokens so `#` / `//` lines prefer comment over raw_body / json / graphql.
+  // Below REQ_SEPARATOR so `###` still opens a section.
+  COMMENT_PREFIX: 5,
   VAR_COMMENT_PREFIX: 2,
   BODY_PREFIX: 2,
   RAW_BODY: 3,
@@ -23,8 +25,9 @@ const WS = /\p{Zs}+/u;
 const NL = token(choice("\n", "\r", "\r\n", "\0"));
 const LINE_TAIL = token(seq(/.*/, NL));
 const ESCAPED = token(/\\[^\n\r]/);
+// Only horizontal whitespace - `\s` would swallow newlines and merge comment lines.
 const COMMENT_PREFIX = token(
-  prec(PREC.COMMENT_PREFIX, choice(/#\s*/, /\/\/\s*/)),
+  prec(PREC.COMMENT_PREFIX, choice(/#[ \t]*/, /\/\/[ \t]*/)),
 );
 
 const OPTIONAL_WS = optional(WS);
@@ -195,6 +198,7 @@ module.exports = grammar({
           repeat(
             choice(
               alias($.metadata, $.comment),
+              $.comment,
               field(
                 "body",
                 choice(

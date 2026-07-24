@@ -16,17 +16,17 @@
           "type": "TOKEN",
           "content": {
             "type": "PREC",
-            "value": 1,
+            "value": 5,
             "content": {
               "type": "CHOICE",
               "members": [
                 {
                   "type": "PATTERN",
-                  "value": "#\\s*"
+                  "value": "#[ \\t]*"
                 },
                 {
                   "type": "PATTERN",
-                  "value": "\\/\\/\\s*"
+                  "value": "\\/\\/[ \\t]*"
                 }
               ]
             }
@@ -80,17 +80,17 @@
             "type": "TOKEN",
             "content": {
               "type": "PREC",
-              "value": 1,
+              "value": 5,
               "content": {
                 "type": "CHOICE",
                 "members": [
                   {
                     "type": "PATTERN",
-                    "value": "#\\s*"
+                    "value": "#[ \\t]*"
                   },
                   {
                     "type": "PATTERN",
-                    "value": "\\/\\/\\s*"
+                    "value": "\\/\\/[ \\t]*"
                   }
                 ]
               }
@@ -1078,6 +1078,10 @@
                   },
                   "named": true,
                   "value": "comment"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "comment"
                 },
                 {
                   "type": "FIELD",
