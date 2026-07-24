@@ -241,7 +241,21 @@
   {
     "type": "graphql_data",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "interpolation_close",
+          "named": true
+        },
+        {
+          "type": "interpolation_open",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "header",
@@ -277,7 +291,17 @@
   {
     "type": "json_body",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "variable",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "metadata",
@@ -1048,6 +1072,14 @@
     "named": true
   },
   {
+    "type": "interpolation_close",
+    "named": true
+  },
+  {
+    "type": "interpolation_open",
+    "named": true
+  },
+  {
     "type": "method",
     "named": true
   },
@@ -1064,11 +1096,19 @@
     "named": true
   },
   {
+    "type": "{",
+    "named": false
+  },
+  {
     "type": "{%",
     "named": false
   },
   {
     "type": "{{",
+    "named": false
+  },
+  {
+    "type": "}",
     "named": false
   },
   {

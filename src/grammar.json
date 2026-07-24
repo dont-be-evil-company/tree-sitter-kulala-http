@@ -1466,7 +1466,7 @@
           "type": "TOKEN",
           "content": {
             "type": "PREC",
-            "value": 1,
+            "value": 5,
             "content": {
               "type": "STRING",
               "value": "{{"
@@ -1511,7 +1511,7 @@
           "type": "TOKEN",
           "content": {
             "type": "PREC",
-            "value": 1,
+            "value": 5,
             "content": {
               "type": "STRING",
               "value": "}}"
@@ -1746,7 +1746,7 @@
             "value": 1,
             "content": {
               "type": "PATTERN",
-              "value": "lang=(lua|js|ts)"
+              "value": "lang=js"
             }
           }
         },
@@ -2238,22 +2238,93 @@
       ]
     },
     "json_body": {
-      "type": "SEQ",
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "TOKEN",
+            "content": {
+              "type": "PREC",
+              "value": 2,
+              "content": {
+                "type": "PATTERN",
+                "value": "[{\\[]\\s*"
+              }
+            }
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_json_piece"
+            }
+          }
+        ]
+      }
+    },
+    "_json_piece": {
+      "type": "CHOICE",
       "members": [
+        {
+          "type": "SYMBOL",
+          "name": "variable"
+        },
         {
           "type": "TOKEN",
           "content": {
             "type": "PREC",
-            "value": 2,
+            "value": 4,
             "content": {
               "type": "PATTERN",
-              "value": "[{\\[]\\s*"
+              "value": "\"([^\"\\\\\\n]|\\\\.)*\""
             }
           }
         },
         {
-          "type": "SYMBOL",
-          "name": "_raw_body"
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 3,
+            "content": {
+              "type": "PATTERN",
+              "value": "[^\"{}\\n]+"
+            }
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 5,
+            "content": {
+              "type": "STRING",
+              "value": "{"
+            }
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 5,
+            "content": {
+              "type": "STRING",
+              "value": "}"
+            }
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 3,
+            "content": {
+              "type": "PATTERN",
+              "value": "\\r?\\n|\\r"
+            }
+          }
         }
       ]
     },
@@ -2305,75 +2376,86 @@
       }
     },
     "graphql_data": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "TOKEN",
-          "content": {
-            "type": "PREC",
-            "value": 2,
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "TOKEN",
             "content": {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "STRING",
-                      "value": "query"
-                    },
-                    {
-                      "type": "STRING",
-                      "value": "mutation"
-                    }
-                  ]
-                },
-                {
-                  "type": "PATTERN",
-                  "value": "\\p{Zs}+",
-                  "flags": "u"
-                },
-                {
-                  "type": "PATTERN",
-                  "value": "[^\\n]*(\\n[^\\n{(]*)*[\\{\\(]\\s*"
-                },
-                {
-                  "type": "TOKEN",
-                  "content": {
+              "type": "PREC",
+              "value": 2,
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
                     "type": "CHOICE",
                     "members": [
                       {
                         "type": "STRING",
-                        "value": "\n"
+                        "value": "query"
                       },
                       {
                         "type": "STRING",
-                        "value": "\r"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "\r\n"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "\u0000"
+                        "value": "mutation"
                       }
                     ]
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": "\\p{Zs}+",
+                    "flags": "u"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": "[^\\n]*(\\n[^\\n{(]*)*[\\{\\(]\\s*"
+                  },
+                  {
+                    "type": "TOKEN",
+                    "content": {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": "\n"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "\r"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "\r\n"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "\u0000"
+                        }
+                      ]
+                    }
                   }
-                }
-              ]
+                ]
+              }
+            }
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_graphql_piece"
             }
           }
-        },
+        ]
+      }
+    },
+    "_graphql_piece": {
+      "type": "CHOICE",
+      "members": [
         {
           "type": "SYMBOL",
-          "name": "_raw_body"
-        }
-      ]
-    },
-    "graphql_json_body": {
-      "type": "SEQ",
-      "members": [
+          "name": "_gql_interpolation"
+        },
         {
           "type": "TOKEN",
           "content": {
@@ -2381,15 +2463,170 @@
             "value": 4,
             "content": {
               "type": "PATTERN",
-              "value": "[{\\[]\\s*"
+              "value": "\"\"\"([^\"]|\"[^\"]|\"\"[^\"])*\"\"\""
             }
           }
         },
         {
-          "type": "SYMBOL",
-          "name": "_raw_body"
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 4,
+            "content": {
+              "type": "PATTERN",
+              "value": "\"([^\"\\\\\\n]|\\\\.)*\""
+            }
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 3,
+            "content": {
+              "type": "PATTERN",
+              "value": "(?:[^\"{\\n]|\\{[^\\n\"{])*(?:\\{\\r?\\n|\\r?\\n)"
+            }
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 3,
+            "content": {
+              "type": "PATTERN",
+              "value": "[^\"{\\n]+"
+            }
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 3,
+            "content": {
+              "type": "PATTERN",
+              "value": "\\r?\\n|\\r"
+            }
+          }
         }
       ]
+    },
+    "_gql_interpolation": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "TOKEN",
+            "content": {
+              "type": "PREC",
+              "value": 6,
+              "content": {
+                "type": "STRING",
+                "value": "{{"
+              }
+            }
+          },
+          "named": true,
+          "value": "interpolation_open"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "TOKEN",
+              "content": {
+                "type": "PREC",
+                "value": 2,
+                "content": {
+                  "type": "PATTERN",
+                  "value": "\\p{Zs}+",
+                  "flags": "u"
+                }
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 2,
+            "content": {
+              "type": "PATTERN",
+              "value": "[A-Za-z_.$\\d\\u00A1-\\uFFFF-]+(\\[[^\\]]+\\]|\\.[A-Za-z_.$\\d\\u00A1-\\uFFFF-]+|\\([^)]*\\))*"
+            }
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "TOKEN",
+              "content": {
+                "type": "PREC",
+                "value": 2,
+                "content": {
+                  "type": "PATTERN",
+                  "value": "\\p{Zs}+",
+                  "flags": "u"
+                }
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "TOKEN",
+            "content": {
+              "type": "PREC",
+              "value": 6,
+              "content": {
+                "type": "STRING",
+                "value": "}}"
+              }
+            }
+          },
+          "named": true,
+          "value": "interpolation_close"
+        }
+      ]
+    },
+    "graphql_json_body": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "TOKEN",
+            "content": {
+              "type": "PREC",
+              "value": 4,
+              "content": {
+                "type": "PATTERN",
+                "value": "[{\\[]\\s*"
+              }
+            }
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_json_piece"
+            }
+          }
+        ]
+      }
     },
     "graphql_external_body": {
       "type": "SEQ",

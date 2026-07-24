@@ -1,0 +1,165 @@
+==================
+Unquoted variables in a JSON body
+==================
+
+@ITEM_CODE = IM2107-16021-0046
+@QUANTITY = 2
+@UNIT_PRICE = 19.99
+
+### create-order
+
+POST https://{{ SAP_HOST }}:{{ SAP_PORT }}/b1s/v2/Orders HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Cookie: B1SESSION={{ B1SESSION }}
+
+{
+  "CardCode": "3314975",
+  "DocDate": "{{ DOC_DATE }}",
+  "DocDueDate": "{{ DOC_DUE_DATE }}",
+  "Comments": "Test order created via Kulala",
+  "DocumentLines": [
+    {
+      "ItemCode": "{{ ITEM_CODE }}",
+      "Quantity": {{ QUANTITY }},
+      "UnitPrice": {{ UNIT_PRICE }}
+    }
+  ]
+}
+
+---
+
+(document
+  (section
+    (variable_declaration
+      (identifier)
+      (value))
+    (variable_declaration
+      (identifier)
+      (value))
+    (variable_declaration
+      (identifier)
+      (value)))
+  (section
+    (request_separator
+      (value))
+    (request
+      (method)
+      (target_url
+        (variable
+          (identifier))
+        (variable
+          (identifier)))
+      (http_version)
+      (header
+        (header_entity)
+        (value))
+      (header
+        (header_entity)
+        (value))
+      (header
+        (header_entity)
+        (value
+          (variable
+            (identifier))))
+      (json_body
+        (variable
+          (identifier))
+        (variable
+          (identifier))))))
+
+==================
+Unquoted variables in a GraphQL operation and variables object
+==================
+
+### gql
+
+GRAPHQL https://example.test/graphql HTTP/1.1
+Authorization: Bearer {{token}}
+
+query Item($id: ID) {
+  item(id: {{ ITEM_ID }}, qty: {{ QUANTITY }}) {
+    name
+    sku
+  }
+  quoted(id: "{{ ITEM_ID }}") {
+    name
+  }
+}
+
+{
+  "id": {{ ITEM_ID }},
+  "label": "{{ ITEM_ID }}"
+}
+
+---
+
+(document
+  (section)
+  (section
+    (request_separator
+      (value))
+    (request
+      (method)
+      (target_url)
+      (http_version)
+      (header
+        (header_entity)
+        (value
+          (variable
+            (identifier))))
+      (graphql_body
+        (graphql_data
+          (interpolation_open)
+          (interpolation_close)
+          (interpolation_open)
+          (interpolation_close))
+        (json_body
+          (variable
+            (identifier)))))))
+
+==================
+JavaScript request scripts
+==================
+
+### scripts
+
+< {%
+  request.variables.set("A", 1);
+%}
+
+< {% lang=js
+  request.variables.set("B", 2);
+%}
+
+POST https://example.test/post HTTP/1.1
+Authorization: Bearer {{token}}
+
+{
+  "ok": true
+}
+
+---
+
+(document
+  (section)
+  (section
+    (request_separator
+      (value))
+    (pre_request_script
+      (script
+        (script_body)))
+    (pre_request_script
+      (script
+        (script_lang)
+        (script_body)))
+    (request
+      (method)
+      (target_url)
+      (http_version)
+      (header
+        (header_entity)
+        (value
+          (variable
+            (identifier))))
+      (json_body))))

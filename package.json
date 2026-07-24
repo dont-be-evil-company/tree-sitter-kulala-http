@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-kulala-http",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "Kulala HTTP Parser",
   "repository": "https://github.com/mistweaverco/tree-sitter-kulala-http",
   "license": "MIT",

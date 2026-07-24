@@ -38,6 +38,31 @@ const PARAM_VALUE_CHARS = /[^\n\r&#\s]+/;
 const FORM_PARAM_NAME_CHARS = /[a-zA-Z0-9_@.\[\]]/;
 const FORM_PARAM_EXCLUSIONS = /[^\s\n\r=&#<{\[\]\}\-:,]+/;
 
+// Quoted text stays one anonymous token so the JSON/GraphQL injection still sees a string.
+// Prec 4 is above raw body (3) and below comments (5).
+const BODY_STRING = token(prec(4, /"([^"\\\n]|\\.)*"/));
+const BODY_BLOCK_STRING = token(prec(4, /"""([^"]|"[^"]|""[^"])*"""/));
+// Stops before `"`, `{`, `}`, and newlines so `{{ }}` and JSON structure stay separate tokens.
+const JSON_CHUNK = token(prec(PREC.RAW_BODY, /[^"{}\n]+/));
+// Above the json/graphql body prefix so a nested `{` stays inside the open body.
+// Same precedence as `{{` / `}}`; the longer interpolation token wins.
+const JSON_OPEN = token(prec(PREC.COMMENT_PREFIX, "{"));
+const JSON_CLOSE = token(prec(PREC.COMMENT_PREFIX, "}"));
+const BODY_NL = token(prec(PREC.RAW_BODY, /\r?\n|\r/));
+// A GraphQL operation line. Single `{` stays inside the line so it does not open the
+// variables object. `{{` does not match, so interpolations can be split out.
+// A `{` at column 0 still loses to graphql_json_body (prec 4 > 3).
+const GQL_LINE = token(
+  prec(PREC.RAW_BODY, /(?:[^"{\n]|\{[^\n"{])*(?:\{\r?\n|\r?\n)/),
+);
+const GQL_CHUNK = token(prec(PREC.RAW_BODY, /[^"{\n]+/));
+const GQL_NAME = token(
+  prec(
+    2,
+    /[A-Za-z_.$\d\u00A1-\uFFFF-]+(\[[^\]]+\]|\.[A-Za-z_.$\d\u00A1-\uFFFF-]+|\([^)]*\))*/,
+  ),
+);
+
 module.exports = grammar({
   name: "kulala_http",
 
@@ -258,11 +283,11 @@ module.exports = grammar({
     // {{foo}} {{$bar}} {{ fizzbuzz }}
     variable: ($) =>
       seq(
-        token(prec(1, "{{")),
+        token(prec(PREC.COMMENT_PREFIX, "{{")),
         OPTIONAL_WS,
         field("name", $.identifier),
         OPTIONAL_WS,
-        token(prec(1, "}}")),
+        token(prec(PREC.COMMENT_PREFIX, "}}")),
       ),
 
     pre_request_script: ($) =>
@@ -283,7 +308,7 @@ module.exports = grammar({
         ),
         token(prec(1, "%}")),
       ),
-    script_lang: (_) => seq(WS, token(prec(1, /lang=(lua|js|ts)/)), NL),
+    script_lang: (_) => seq(WS, token(prec(1, /lang=js/)), NL),
     script_body: (_) => repeat1(LINE_TAIL),
 
     res_redirect: ($) =>
@@ -348,7 +373,16 @@ module.exports = grammar({
     xml_body: ($) => seq(token(prec(PREC.BODY_PREFIX, /<[^\s@]/)), $._raw_body),
 
     json_body: ($) =>
-      seq(token(prec(PREC.BODY_PREFIX, /[{\[]\s*/)), $._raw_body),
+      prec.right(
+        seq(
+          token(prec(PREC.BODY_PREFIX, /[{\[]\s*/)),
+          repeat($._json_piece),
+        ),
+      ),
+
+    // Hidden. `variable` is the only named child, so injections omit `{{ name }}`.
+    _json_piece: ($) =>
+      choice($.variable, BODY_STRING, JSON_CHUNK, JSON_OPEN, JSON_CLOSE, BODY_NL),
 
     graphql_body: ($) =>
       prec.right(
@@ -359,22 +393,48 @@ module.exports = grammar({
         ),
       ),
     graphql_data: ($) =>
-      seq(
-        token(
-          prec(
-            PREC.BODY_PREFIX,
-            seq(
-              choice("query", "mutation"),
-              WS,
-              /[^\n]*(\n[^\n{(]*)*[\{\(]\s*/,
-              NL,
+      prec.right(
+        seq(
+          token(
+            prec(
+              PREC.BODY_PREFIX,
+              seq(
+                choice("query", "mutation"),
+                WS,
+                /[^\n]*(\n[^\n{(]*)*[\{\(]\s*/,
+                NL,
+              ),
             ),
           ),
+          repeat($._graphql_piece),
         ),
-        $._raw_body,
+      ),
+    // Hidden. Named children are only the delimiters, so the injected GraphQL
+    // text keeps the name (`id: ITEM_ID`) and drops `{{` / `}}`.
+    _graphql_piece: ($) =>
+      choice(
+        $._gql_interpolation,
+        BODY_BLOCK_STRING,
+        BODY_STRING,
+        GQL_LINE,
+        GQL_CHUNK,
+        BODY_NL,
+      ),
+    _gql_interpolation: ($) =>
+      seq(
+        alias(token(prec(6, "{{")), $.interpolation_open),
+        optional(token(prec(2, WS))),
+        GQL_NAME,
+        optional(token(prec(2, WS))),
+        alias(token(prec(6, "}}")), $.interpolation_close),
       ),
     graphql_json_body: ($) =>
-      seq(token(prec(PREC.GRAPHQL_JSON_PREFIX, /[{\[]\s*/)), $._raw_body),
+      prec.right(
+        seq(
+          token(prec(PREC.GRAPHQL_JSON_PREFIX, /[{\[]\s*/)),
+          repeat($._json_piece),
+        ),
+      ),
 
     graphql_external_body: ($) =>
       seq(

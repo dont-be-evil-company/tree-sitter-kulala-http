@@ -87,6 +87,8 @@
   "}}"
   "{%"
   "%}"
+  (interpolation_open)
+  (interpolation_close)
 ] @punctuation.bracket
 
 ">" @punctuation.special
