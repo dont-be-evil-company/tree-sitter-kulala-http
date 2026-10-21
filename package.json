@@ -2,11 +2,11 @@
   "name": "tree-sitter-kulala-http",
   "version": "1.0.0",
   "description": "Kulala HTTP Parser",
-  "repository": "https://github.com/mistweaverco/tree-sitter-kulala-http",
+  "repository": "https://github.com/dont-be-evil-company/tree-sitter-kulala-http",
   "license": "MIT",
   "author": {
-    "name": "mistweaverco",
-    "email": "oss@mistweaverco.com"
+    "name": "The Don't Be Evil Company",
+    "email": "oss@the-dont-be-evil-company.com"
   },
   "contributors": [
     {
@@ -15,7 +15,7 @@
     },
     {
       "name": "Marco Kellershoff",
-      "email": "marco@mistweaverco.com"
+      "email": "marco@the-dont-be-evil-company.com"
     }
   ],
   "main": "bindings/node",

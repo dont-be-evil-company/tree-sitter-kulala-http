@@ -3,7 +3,7 @@ $(error Windows is not supported)
 endif
 
 LANGUAGE_NAME := tree-sitter-kulala-http
-HOMEPAGE_URL := https://github.com/mistweaverco/tree-sitter-kulala-http
+HOMEPAGE_URL := https://github.com/dont-be-evil-company/tree-sitter-kulala-http
 VERSION := 0.1.0
 
 # repository

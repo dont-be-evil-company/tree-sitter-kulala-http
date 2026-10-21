@@ -4,13 +4,13 @@ description = "Kulala HTTP Parser"
 version = "0.1.0"
 authors = [
   "Yaro Apletov <yaro@dream-it.es>"
-  "Marco Kellershoff <marco@mistweaverco.com>"
+  "Marco Kellershoff <marco@the-dont-be-evil-company.com>"
 ]
 license = "MIT"
 readme = "README.md"
 keywords = ["incremental", "parsing", "tree-sitter", "kulala-http"]
 categories = ["parser-implementations", "parsing", "text-editors"]
-repository = "https://github.com/mistweaverco/tree-sitter-kulala-http"
+repository = "https://github.com/dont-be-evil-company/tree-sitter-kulala-http"
 edition = "2021"
 autoexamples = false
 

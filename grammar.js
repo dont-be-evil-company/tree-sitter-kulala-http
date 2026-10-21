@@ -1,7 +1,7 @@
 /**
  * @file Kulala HTTP Parser
  * @author Yaro Apletov <yaro@dream-it.es>
- * @author Marco Kellershoff <marco@mistweaverco.com>
+ * @author Marco Kellershoff <marco@the-dont-be-evil-company.com>
  * @license MIT
  */
 

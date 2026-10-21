@@ -20,7 +20,7 @@ authors = [
   },
   {
     name = "Marco Kellershoff",
-    email = "marco@mistweaverco.com"
+    email = "marco@the-dont-be-evil-company.com"
   }
 ]
 requires-python = ">=3.10"
@@ -28,8 +28,8 @@ license.text = "MIT"
 readme = "README.md"
 
 [project.urls]
-Homepage = "https://github.com/mistweaverco/tree-sitter-kulala-http"
-Funding = "https://github.com/mistweaverco/tree-sitter-kulala-http"
+Homepage = "https://github.com/dont-be-evil-company/tree-sitter-kulala-http"
+Funding = "https://github.com/dont-be-evil-company/tree-sitter-kulala-http"
 
 [project.optional-dependencies]
 core = ["tree-sitter~=0.24"]

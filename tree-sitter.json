@@ -33,8 +33,8 @@
     "description": "Kulala HTTP Parser",
     "license": "MIT",
     "links": {
-      "funding": "https://github.com/mistweaverco/tree-sitter-kulala-http",
-      "repository": "https://github.com/mistweaverco/tree-sitter-kulala-http"
+      "funding": "https://github.com/dont-be-evil-company/tree-sitter-kulala-http",
+      "repository": "https://github.com/dont-be-evil-company/tree-sitter-kulala-http"
     },
     "version": "0.2.4"
   }

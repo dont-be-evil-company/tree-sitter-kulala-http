@@ -1,5 +1,7 @@
-module github.com/mistweaverco/tree-sitter-kulala-http
+module github.com/dont-be-evil-company/tree-sitter-kulala-http
 
 go 1.22
 
 require github.com/tree-sitter/go-tree-sitter v0.24.0
+
+require github.com/mattn/go-pointer v0.0.1 // indirect
